@@ -2,8 +2,7 @@ import streamlit as st
 import requests
 
 # Gemini API information
-API_URL = "https://api-inference.gemini.openai.com/v1/completions"  # Update the endpoint if needed
-headers = {"Authorization": "Bearer AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"}  # Replace with your actual Gemini API key
+https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko
 
 # Function to get meal plan with descriptions from Gemini
 def get_meal_plan_with_descriptions(calories, restrictions):
