@@ -1,10 +1,10 @@
 import streamlit as st
 import requests
 
-# Gemini API information
+# Google Gemini API information
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"
 
-# Function to get meal plan with descriptions from Gemini API
+# Function to get meal plan with descriptions from Google Gemini API
 def get_meal_plan_with_descriptions(calories, restrictions):
     # Structuring the prompt for the API
     prompt = (
@@ -16,16 +16,20 @@ def get_meal_plan_with_descriptions(calories, restrictions):
     )
     
     # Define the data to be sent to the API
-    data = {"inputs": prompt}  # Correctly define the `data` variable
+    data = {
+        "prompt": {"text": prompt},
+        "temperature": 0.7,
+        "maxOutputTokens": 512,
+    }
     
     # Make the API request
     try:
-        response = requests.post(API_URL, headers=headers, json=data)
+        response = requests.post(API_URL, json=data)
         
         # Check response status and extract meal plan if successful
         if response.ok:
             try:
-                return response.json()[0].get("generated_text", "No meal plan generated.")
+                return response.json().get("candidates", [{}])[0].get("output", "No meal plan generated.")
             except (KeyError, IndexError, TypeError):
                 return "Meal plan could not be generated due to unexpected response format."
         else:
