@@ -1,24 +1,34 @@
 import streamlit as st
 import requests
 
-# Hugging Face API information
-API_URL = "https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-1B"
-headers = {"Authorization": "Bearer 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"}
+# Gemini API information
+API_URL = "https://api-inference.gemini.openai.com/v1/completions"  # Update the endpoint if needed
+headers = {"Authorization": "Bearer AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"}  # Replace with your actual Gemini API key
 
-# Function to get meal plan with descriptions from Hugging Face
+# Function to get meal plan with descriptions from Gemini
 def get_meal_plan_with_descriptions(calories, restrictions):
     # Structuring the prompt to provide clearer instructions to the model
     prompt = (
-        f"Generate meal plan for breakfast, lunch and dinner with dietary restrictions: {', '.join(restrictions)} to provide approximately {calories} calories. "
+        f"Design a detailed meal plan for one day, tailored to provide approximately {calories} calories. "
+        f"The plan should include five meals: breakfast, lunch, dinner, and two snacks. For each meal, specify: "
+        f"The meal name, the main ingredient, and a brief description. "
+        f"Ensure the meal plan adheres to the following dietary restrictions: {', '.join(restrictions)}. "
+        f"The total calorie count should align with the specified target, and the meals should be diverse and balanced."
     )
     
     # Making the API request
-    response = requests.post(API_URL, headers=headers, json={"inputs": prompt})
+    data = {
+        "model": "gemini-1.5",  # Specify the Gemini model version
+        "prompt": prompt,
+        "max_tokens": 500,
+        "temperature": 0.7
+    }
+    response = requests.post(API_URL, headers=headers, json=data)
 
     # Check response status and extract meal plan if successful
     if response.ok:
         try:
-            meal_plan = response.json()[0].get("generated_text", "No meal plan generated.")
+            meal_plan = response.json().get("choices", [{}])[0].get("text", "No meal plan generated.")
         except (KeyError, IndexError, TypeError):
             meal_plan = "Meal plan could not be generated due to unexpected response format."
     else:
