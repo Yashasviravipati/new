@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Gemini API information
-API_URL = "https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5-flash:generateText"
+API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"
 GEMINI_API_KEY = "AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"  # Replace with your Gemini API key
 
 # Function to get meal plan with descriptions from Gemini API
