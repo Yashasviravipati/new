@@ -3,7 +3,7 @@ import requests
 
 # Gemini API information
 API_URL = "https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5-flash:generateText"
-GEMINI_API_KEY = "AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"  # Replace with your Gemini API Key
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"  # Replace with your Gemini API Key
 
 # Function to get meal plan with descriptions from Gemini API
 def get_meal_plan_with_descriptions(calories, restrictions):
@@ -17,7 +17,7 @@ def get_meal_plan_with_descriptions(calories, restrictions):
     
     # Gemini API payload
     payload = {
-        "input": prompt,
+        "text": prompt,  # Using "text" instead of "input" for the prompt
         "temperature": 0.7,  # Adjust for creativity
         "candidateCount": 1,  # Number of responses to generate
         "maxOutputTokens": 512  # Ensure enough space for detailed responses
