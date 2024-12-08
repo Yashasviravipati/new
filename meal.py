@@ -1,43 +1,44 @@
 import streamlit as st
 import requests
 
-# Google Gemini API information
-API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"
+# Gemini API information
+API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+GEMINI_API_KEY = "AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"  # Replace with your Gemini API Key
 
-# Function to get meal plan with descriptions from Google Gemini API
+# Function to get meal plan with descriptions from Gemini API
 def get_meal_plan_with_descriptions(calories, restrictions):
-    # Structuring the prompt for the API
+    # Structuring the prompt for the Gemini model
     prompt = (
-        f"Design a detailed meal plan for one day, tailored to provide approximately {calories} calories. "
-        f"The plan should include five meals: breakfast, lunch, dinner, and two snacks. "
-        f"For each meal, specify: The meal name. The main ingredient. A brief description of the meal. "
-        f"Ensure the meal plan adheres to the following dietary restrictions: {', '.join(restrictions)}. "
-        f"The total calorie count should align with the specified target, and the meals should be diverse and balanced."
+        f"Create a detailed meal plan for an entire day providing approximately {calories} calories. "
+        f"Include breakfast, lunch, dinner, and two snacks, with each meal having a brief description. "
+        f"Consider these dietary restrictions: {', '.join(restrictions)}. "
+        f"Each meal should have a name, main ingredients, and a short description."
     )
     
-    # Define the data to be sent to the API
-    data = {
+    # Gemini API payload
+    payload = {
         "prompt": {"text": prompt},
-        "temperature": 0.7,
-        "maxOutputTokens": 512,
+        "temperature": 0.7,  # Controls creativity; adjust as needed
+        "maxOutputTokens": 300,  # Adjust for longer responses if necessary
     }
     
-    # Make the API request
-    try:
-        response = requests.post(API_URL, json=data)
-        
-        # Check response status and extract meal plan if successful
-        if response.ok:
-            try:
-                return response.json().get("candidates", [{}])[0].get("output", "No meal plan generated.")
-            except (KeyError, IndexError, TypeError):
-                return "Meal plan could not be generated due to unexpected response format."
-        else:
-            return f"Meal plan could not be generated. Error: {response.status_code} - {response.text}"
-    except requests.exceptions.ConnectionError:
-        return "Connection error: Unable to reach the Gemini API."
-    except Exception as e:
-        return f"An unexpected error occurred: {str(e)}"
+    # Making the API request
+    response = requests.post(
+        f"{API_URL}?key={GEMINI_API_KEY}",
+        json=payload
+    )
+    
+    # Handling the response
+    if response.ok:
+        try:
+            # Extract the generated text
+            meal_plan = response.json()["candidates"][0]["output"]
+        except (KeyError, IndexError, TypeError):
+            meal_plan = "Meal plan could not be generated due to unexpected response format."
+    else:
+        meal_plan = f"Meal plan could not be generated. Error: {response.status_code} - {response.text}"
+    
+    return meal_plan
 
 # Calorie calculation function
 def calculate_calories(age, weight, height, gender):
