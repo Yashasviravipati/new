@@ -17,7 +17,7 @@ def get_meal_plan_with_descriptions(calories, restrictions):
     
     # Gemini API payload
     payload = {
-        "text": prompt,  # Using "text" instead of "input" for the prompt
+        "prompt": prompt,  # Correct field name for the text input
         "temperature": 0.7,  # Adjust for creativity
         "candidateCount": 1,  # Number of responses to generate
         "maxOutputTokens": 512  # Ensure enough space for detailed responses
