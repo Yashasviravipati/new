@@ -3,7 +3,7 @@ import requests
 
 # Gemini API information
 API_URL = "https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5-flash:generateText"
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"  # Replace with your Gemini API Key
+GEMINI_API_KEY = "AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"  # Replace with your Gemini API Key
 
 # Function to get meal plan with descriptions from Gemini API
 def get_meal_plan_with_descriptions(calories, restrictions):
