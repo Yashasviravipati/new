@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Gemini API information
-API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+API_URL = "https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5-flash:generateText"
 GEMINI_API_KEY = "AIzaSyClGQusntsKRRi5pDyQzjoBxzPafOCqlko"  # Replace with your Gemini API Key
 
 # Function to get meal plan with descriptions from Gemini API
@@ -17,9 +17,10 @@ def get_meal_plan_with_descriptions(calories, restrictions):
     
     # Gemini API payload
     payload = {
-        "prompt": {"text": prompt},
-        "temperature": 0.7,  # Controls creativity; adjust as needed
-        "maxOutputTokens": 300,  # Adjust for longer responses if necessary
+        "input": prompt,
+        "temperature": 0.7,  # Adjust for creativity
+        "candidateCount": 1,  # Number of responses to generate
+        "maxOutputTokens": 512  # Ensure enough space for detailed responses
     }
     
     # Making the API request
